@@ -103,15 +103,15 @@ def blacklistcheck():
 
 def run_program():
     # Timer loop to update the subscribers list
-    print('Starting first loop in 15 seconds')
+    print(f'Starting first loop in {os.getenv("INTERVAL")} seconds, press CTRL+C to cancel')
     print('------------------')
     while True:
-        time.sleep(15)
+        time.sleep(int(os.getenv("INTERVAL")))
         print('Checking for users who want to be blacklisted')
         blacklistcheck()
-        print('Checking for new subscribers')
+        print('\nChecking for new subscribers')
         likecheck()
-        print('\nFinished loop: next starts in 15 seconds\n------------------')
+        print(f'\nFinished loop: next starts in {os.getenv("INTERVAL")} seconds, press CTRL+C to cancel\n------------------')
 
 def exit_gracefully(signum, frame):
     # restore the original signal handler as otherwise evil things will happen
