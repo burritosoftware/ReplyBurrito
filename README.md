@@ -25,4 +25,4 @@ pip install -r requirements.txt
 
 6. Run `monitor.py` to begin monitoring the tweet.
 
-7. When you're ready to send your scheduled tweet, stop `monitor.py` and run `send.py` to send tweets to each subscriber.
+7. When you're ready to send your tweet to subscribers, stop `monitor.py` and run `send.py` to send tweets to each subscriber. You can use your operating system's built-in tools to run this script at a certain date/time.
