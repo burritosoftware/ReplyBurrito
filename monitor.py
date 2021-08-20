@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 import json
 import time
+import signal
+import sys
 import tweepy
 from TwitterAPI import TwitterAPI # This is just here to access v2 endpoints a bit easier since tweepy doesn't fully support them yet
 
@@ -99,13 +101,36 @@ def blacklistcheck():
                         pass
     blacklistfile.close()
 
-# Timer loop to update the subscribers list
-print('Starting first loop in 15 seconds')
-print('------------------')
-while True:
-    time.sleep(15)
-    print('Checking for users who want to be blacklisted')
-    blacklistcheck()
-    print('Checking for new subscribers')
-    likecheck()
-    print('\nFinished loop: next starts in 15 seconds\n------------------')
+def run_program():
+    # Timer loop to update the subscribers list
+    print('Starting first loop in 15 seconds')
+    print('------------------')
+    while True:
+        time.sleep(15)
+        print('Checking for users who want to be blacklisted')
+        blacklistcheck()
+        print('Checking for new subscribers')
+        likecheck()
+        print('\nFinished loop: next starts in 15 seconds\n------------------')
+
+def exit_gracefully(signum, frame):
+    # restore the original signal handler as otherwise evil things will happen
+    # in raw_input when CTRL+C is pressed, and our signal handler is not re-entrant
+    signal.signal(signal.SIGINT, original_sigint)
+
+    try:
+        if input("\nStop monitoring? (y/n)> ").lower().startswith('y'):
+            sys.exit(1)
+
+    except KeyboardInterrupt:
+        print("Tweet monitoring stopped.")
+        sys.exit(1)
+
+    # restore the exit gracefully handler here    
+    signal.signal(signal.SIGINT, exit_gracefully)
+
+if __name__ == '__main__':
+    # store the original SIGINT handler
+    original_sigint = signal.getsignal(signal.SIGINT)
+    signal.signal(signal.SIGINT, exit_gracefully)
+    run_program()
