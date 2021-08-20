@@ -100,7 +100,7 @@ def blacklistcheck():
     blacklistfile.close()
 
 # Timer loop to update the subscribers list
-print('Starting loop')
+print('Starting first loop in 15 seconds')
 print('------------------')
 while True:
     time.sleep(15)
@@ -108,4 +108,4 @@ while True:
     blacklistcheck()
     print('Checking for new subscribers')
     likecheck()
-    print('\nFinished\n------------------')
+    print('\nFinished loop: next starts in 15 seconds\n------------------')
