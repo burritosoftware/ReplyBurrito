@@ -24,7 +24,9 @@ verifier = input('PIN: ')
 
 try:
     auth.get_access_token(verifier)
-    print('Signed in!')
+    api = tweepy.API(auth)
+    currentuser = api.me()
+    print('Logged in as: ' + currentuser.screen_name)
 except tweepy.TweepError:
     print('Error! Failed to get access token.')
 
